@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_initicon/flutter_initicon.dart';
+import 'package:kwtd/widgets/list_button.dart';
 
 class MenteeProfile extends StatefulWidget {
   const MenteeProfile({super.key});
@@ -32,7 +33,7 @@ class _MenteeProfileState extends State<MenteeProfile> {
             ),
           ),
           SizedBox(
-            height: screenHeight * 0.03,
+            height: screenHeight * 0.01,
           ),
           Text(
             name,
@@ -41,7 +42,59 @@ class _MenteeProfileState extends State<MenteeProfile> {
               color: Colors.blueGrey.shade800,
               fontWeight: FontWeight.bold,
             ),
-          )
+          ),
+          SizedBox(
+            height: screenHeight * 0.01,
+          ),
+          ListButton(
+            label: 'Edit Profile',
+            icon: const Icon(
+              Icons.edit,
+              color: Colors.deepPurple,
+            ),
+            onPressed: () {
+              // Handle button tap for Edit Profile
+            },
+          ),
+          SizedBox(
+            height: screenHeight * 0.01,
+          ),
+          ListButton(
+            label: 'Wallet',
+            icon: const Icon(
+              Icons.account_balance_wallet,
+              color: Colors.deepPurple,
+            ),
+            onPressed: () {
+              // Handle button tap for Wallet
+            },
+          ),
+          SizedBox(
+            height: screenHeight * 0.01,
+          ),
+          ListButton(
+            label: 'Mentors',
+            icon: const Icon(
+              Icons.people,
+              color: Colors.deepPurple,
+            ),
+            onPressed: () {
+              // Handle button tap for Mentors
+            },
+          ),
+          SizedBox(
+            height: screenHeight * 0.01,
+          ),
+          ListButton(
+            label: 'App Settings',
+            icon: const Icon(
+              Icons.settings,
+              color: Colors.deepPurple,
+            ),
+            onPressed: () {
+              // Handle button tap for App Settings
+            },
+          ),
         ],
       ),
     );

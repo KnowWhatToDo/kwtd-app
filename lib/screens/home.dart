@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:kwtd/screens/blogs.dart';
 import 'package:kwtd/screens/mentee_screens/mentee_home.dart';
 import 'package:kwtd/screens/mentee_screens/mentee_profile.dart';
