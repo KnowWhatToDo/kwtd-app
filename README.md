@@ -1,3 +1,20 @@
 # KWTD - Know What To Do
 
 ## Project Structure:
+Main folders to look out for:
+- controllers (will contain controllers for models and state management variables)
+- screens (contains the front end for different screens)
+- services (will be used for making modular services)
+- stlyes (contains the frequently used styles for UI components)
+- themes (at present contains the defaul configuration for a light theme)
+- widgets (contains of frequently used UI components)
+
+## TODO:
+- Make Views folder to insert views
+- Make Models folder to add models for api calls
+- Implement home screen
+- Decide on Mentee form (as per the algorithm)
+- Make Wallet UI
+- design mentor UI
+- Make home page carousel
+- Make Home page meetings/request meetings setting

@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_initicon/flutter_initicon.dart';
@@ -86,13 +87,26 @@ class _MenteeProfileState extends State<MenteeProfile> {
             height: screenHeight * 0.01,
           ),
           ListButton(
-            label: 'App Settings',
+            label: 'Settings',
             icon: const Icon(
               Icons.settings,
               color: Colors.deepPurple,
             ),
             onPressed: () {
               // Handle button tap for App Settings
+            },
+          ),
+          SizedBox(
+            height: screenHeight * 0.01,
+          ),
+          ListButton(
+            label: 'Log Out',
+            icon: const Icon(
+              Icons.exit_to_app,
+              color: Colors.deepPurple,
+            ),
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
             },
           ),
         ],
