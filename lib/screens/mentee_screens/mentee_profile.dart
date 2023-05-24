@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_initicon/flutter_initicon.dart';
-import 'package:kwtd/screens/default_page.dart';
 import 'package:kwtd/widgets/list_button.dart';
 
 class MenteeProfile extends StatefulWidget {
