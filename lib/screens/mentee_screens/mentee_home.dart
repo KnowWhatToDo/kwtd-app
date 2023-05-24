@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kwtd/controllers/user_details.dart';
+import 'package:kwtd/screens/views/meetings_view.dart';
 
 class MenteeHome extends ConsumerStatefulWidget {
   const MenteeHome({super.key});
@@ -26,25 +27,13 @@ class _MenteeHomeState extends ConsumerState<MenteeHome> {
           SizedBox(
             height: screenHeight * 0.02,
           ),
-          Text(
-            'Welcome $name',
-            style: TextStyle(
-              fontSize: 28,
-              color: Colors.blueGrey.shade800,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
           CarouselSlider(
             options: CarouselOptions(
               height: screenHeight * 0.28,
               autoPlay: true,
               autoPlayInterval: const Duration(seconds: 4),
             ),
-            items: [
-              dummyWidget(context),
-              dummyWidget(context),
-              dummyWidget(context)
-            ].map((i) {
+            items: [1, 2, 3, 4, 5].map((i) {
               return Builder(
                 builder: (BuildContext context) {
                   return Container(
@@ -55,43 +44,23 @@ class _MenteeHomeState extends ConsumerState<MenteeHome> {
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                         color: Colors.blue.shade800,
-                        width: 3,
+                        width: 4,
                       ),
                     ),
-                    child: i,
+                    child: Center(
+                      child: Text(
+                        'text $i',
+                        style: const TextStyle(fontSize: 36.0),
+                      ),
+                    ),
                   );
                 },
               );
             }).toList(),
-          )
+          ),
+          const MeetingsView(),
         ],
       ),
     );
   }
-}
-
-Widget dummyWidget(BuildContext context) {
-  return GestureDetector(
-    onTap: () {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'LoL',
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    },
-    child: SizedBox(
-      height: MediaQuery.of(context).size.height * 0.28,
-      width: MediaQuery.of(context).size.height * (16.0 / 9.0),
-      child: const Text(
-        "Connect with us on WhatsApp.",
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
-        textAlign: TextAlign.center,
-      ),
-    ),
-  );
 }
