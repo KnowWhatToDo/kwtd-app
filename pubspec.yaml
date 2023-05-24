@@ -48,6 +48,7 @@ dependencies:
   firebase_auth: ^4.4.2
   flutter_initicon: ^3.0.0+1
   carousel_slider: ^4.2.1
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
