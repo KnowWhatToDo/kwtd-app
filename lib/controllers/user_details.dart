@@ -8,6 +8,6 @@ final mentorStateProvider = StateProvider<bool>((ref) {
   return false;
 });
 
-final userDisplayNameProvider = StateProvider<String>((ref) {
-  return 'mentor';
+final usernameProvider = StateProvider<String>((ref) {
+  return '';
 });

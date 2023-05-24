@@ -1,7 +1,7 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_initicon/flutter_initicon.dart';
+import 'package:kwtd/screens/default_page.dart';
 import 'package:kwtd/widgets/list_button.dart';
 
 class MenteeProfile extends StatefulWidget {
@@ -31,6 +31,7 @@ class _MenteeProfileState extends State<MenteeProfile> {
             child: Initicon(
               text: name!,
               elevation: 4,
+              backgroundColor: Colors.deepOrangeAccent,
             ),
           ),
           SizedBox(
@@ -44,9 +45,6 @@ class _MenteeProfileState extends State<MenteeProfile> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(
-            height: screenHeight * 0.01,
-          ),
           ListButton(
             label: 'Edit Profile',
             icon: const Icon(
@@ -56,9 +54,6 @@ class _MenteeProfileState extends State<MenteeProfile> {
             onPressed: () {
               // Handle button tap for Edit Profile
             },
-          ),
-          SizedBox(
-            height: screenHeight * 0.01,
           ),
           ListButton(
             label: 'Wallet',
@@ -70,9 +65,6 @@ class _MenteeProfileState extends State<MenteeProfile> {
               // Handle button tap for Wallet
             },
           ),
-          SizedBox(
-            height: screenHeight * 0.01,
-          ),
           ListButton(
             label: 'Mentors',
             icon: const Icon(
@@ -82,9 +74,6 @@ class _MenteeProfileState extends State<MenteeProfile> {
             onPressed: () {
               // Handle button tap for Mentors
             },
-          ),
-          SizedBox(
-            height: screenHeight * 0.01,
           ),
           ListButton(
             label: 'Settings',
@@ -96,9 +85,6 @@ class _MenteeProfileState extends State<MenteeProfile> {
               // Handle button tap for App Settings
             },
           ),
-          SizedBox(
-            height: screenHeight * 0.01,
-          ),
           ListButton(
             label: 'Log Out',
             icon: const Icon(
@@ -107,6 +93,7 @@ class _MenteeProfileState extends State<MenteeProfile> {
             ),
             onPressed: () {
               FirebaseAuth.instance.signOut();
+              Navigator.popUntil(context, (route) => route.isFirst);
             },
           ),
         ],

@@ -1,18 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:kwtd/controllers/user_details.dart';
 import 'package:kwtd/screens/home.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AccountSetup extends StatefulWidget {
+class AccountSetup extends ConsumerStatefulWidget {
   const AccountSetup({super.key});
 
   @override
-  State<AccountSetup> createState() => _AccountSetupState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AccountSetupState();
 }
 
-class _AccountSetupState extends State<AccountSetup> {
+class _AccountSetupState extends ConsumerState<AccountSetup> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
@@ -74,6 +76,7 @@ class _AccountSetupState extends State<AccountSetup> {
                 if (_formKey.currentState!.validate()) {
                   FirebaseAuth.instance.currentUser!
                       .updateDisplayName(_controller.text);
+                  ref.read(usernameProvider.notifier).state = _controller.text;
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => const HomePage()),
