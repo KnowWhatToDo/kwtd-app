@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:flutter/foundation.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kwtd/controllers/user_details.dart';
+// import 'package:kwtd/models/mentor.dart';
+// import 'package:kwtd/controllers/user_details.dart';
 import 'package:kwtd/screens/views/meetings_view.dart';
 
 class MenteeHome extends ConsumerStatefulWidget {
@@ -14,10 +16,15 @@ class MenteeHome extends ConsumerStatefulWidget {
 
 class _MenteeHomeState extends ConsumerState<MenteeHome> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    String name = FirebaseAuth.instance.currentUser!.displayName ??
-        ref.read(usernameProvider);
+    // String name = FirebaseAuth.instance.currentUser!.displayName ??
+    //     ref.read(usernameProvider);
 
     return Padding(
       padding: const EdgeInsets.all(8.0),

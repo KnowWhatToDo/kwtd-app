@@ -14,6 +14,7 @@ class Mentor {
   int wallet;
   List<String> questions;
   List<String> answers;
+  bool isVerified;
 
   Mentor({
     required this.name,
@@ -23,6 +24,7 @@ class Mentor {
     required this.wallet,
     required this.questions,
     required this.answers,
+    required this.isVerified,
   });
 
   factory Mentor.fromJson(Map<String, dynamic> json) => Mentor(
@@ -34,6 +36,7 @@ class Mentor {
         wallet: json["wallet"],
         questions: List<String>.from(json["questions"].map((x) => x)),
         answers: List<String>.from(json["answers"].map((x) => x)),
+        isVerified: json["verified"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -44,5 +47,6 @@ class Mentor {
         "wallet": wallet,
         "questions": List<dynamic>.from(questions.map((x) => x)),
         "answers": List<dynamic>.from(answers.map((x) => x)),
+        "isVerified": isVerified,
       };
 }
