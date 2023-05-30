@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_initicon/flutter_initicon.dart';
+import 'package:kwtd/screens/mentee_screens/mentee_edit_profile.dart';
 import 'package:kwtd/widgets/list_button.dart';
 
 class MenteeProfile extends StatefulWidget {
@@ -11,12 +12,12 @@ class MenteeProfile extends StatefulWidget {
 }
 
 class _MenteeProfileState extends State<MenteeProfile> {
+  String? name = FirebaseAuth.instance.currentUser!.displayName;
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-
-    String? name = FirebaseAuth.instance.currentUser!.displayName;
 
     return SizedBox(
       width: screenWidth,
@@ -37,7 +38,7 @@ class _MenteeProfileState extends State<MenteeProfile> {
             height: screenHeight * 0.01,
           ),
           Text(
-            name,
+            name!,
             style: TextStyle(
               fontSize: 28,
               color: Colors.blueGrey.shade800,
@@ -51,7 +52,12 @@ class _MenteeProfileState extends State<MenteeProfile> {
               color: Colors.deepPurple,
             ),
             onPressed: () {
-              // Handle button tap for Edit Profile
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MenteeProfielEdit(),
+                ),
+              );
             },
           ),
           ListButton(

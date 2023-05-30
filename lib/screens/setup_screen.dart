@@ -77,6 +77,7 @@ class _AccountSetupState extends ConsumerState<AccountSetup> {
                   FirebaseAuth.instance.currentUser!
                       .updateDisplayName(_controller.text);
                   ref.read(usernameProvider.notifier).state = _controller.text;
+
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => const HomePage()),

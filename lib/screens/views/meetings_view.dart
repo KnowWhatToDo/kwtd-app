@@ -1,5 +1,3 @@
-// import 'dart:convert';
-// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -22,13 +20,13 @@ class _MeetingsViewState extends ConsumerState<MeetingsView> {
     super.initState();
   }
 
+  String meetingState = 'not-registered';
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [],
-    );
+    return (meetingState == 'not-registered')
+        ? const NotRegistered()
+        : Container();
   }
 
   void getMentee() async {
@@ -37,6 +35,45 @@ class _MeetingsViewState extends ConsumerState<MeetingsView> {
     //   print('Mentee name: $mentee.name');
     // }
     // Mentor mentor = await getMentorDetails();
-    // print(mentor.collegeName);
+    // print(mentor.experiences[0].endDate.toString().split(' ')[0]);
+  }
+}
+
+class NotRegistered extends StatelessWidget {
+  const NotRegistered({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.45,
+      width: MediaQuery.of(context).size.width * 0.96,
+      decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Just one last step :-)',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.05,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text('Goes to registeration page....')));
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepOrange.shade700),
+              child: const Text('Complete Registeration'),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

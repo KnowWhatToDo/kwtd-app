@@ -12,8 +12,6 @@ class Mentor {
   String collegeName;
   List<String> skills;
   int wallet;
-  List<String> questions;
-  List<String> answers;
   bool isVerified;
 
   Mentor({
@@ -22,8 +20,6 @@ class Mentor {
     required this.collegeName,
     required this.skills,
     required this.wallet,
-    required this.questions,
-    required this.answers,
     required this.isVerified,
   });
 
@@ -34,8 +30,6 @@ class Mentor {
         collegeName: json["collegeName"],
         skills: List<String>.from(json["skills"].map((x) => x)),
         wallet: json["wallet"],
-        questions: List<String>.from(json["questions"].map((x) => x)),
-        answers: List<String>.from(json["answers"].map((x) => x)),
         isVerified: json["verified"],
       );
 
@@ -45,8 +39,6 @@ class Mentor {
         "collegeName": collegeName,
         "skills": List<dynamic>.from(skills.map((x) => x)),
         "wallet": wallet,
-        "questions": List<dynamic>.from(questions.map((x) => x)),
-        "answers": List<dynamic>.from(answers.map((x) => x)),
         "isVerified": isVerified,
       };
 }
