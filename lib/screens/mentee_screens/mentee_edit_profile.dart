@@ -135,7 +135,8 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
                 ),
                 const SizedBox(height: 16.0),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Name of College'),
+                  decoration:
+                      const InputDecoration(labelText: 'Name of College'),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter the name of your college';
@@ -163,7 +164,7 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
                 const SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: _submitForm,
-                  child: const Text('Submit'),
+                  child: const Text('Save'),
                 ),
               ],
             ),

@@ -80,7 +80,9 @@ class _AccountSetupState extends ConsumerState<AccountSetup> {
 
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
+                    MaterialPageRoute(
+                      builder: (context) => const HomePage(),
+                    ),
                   );
                 }
               },

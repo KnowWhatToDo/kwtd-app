@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kwtd/screens/default_page.dart';
 import 'package:kwtd/screens/home.dart';
+import 'package:kwtd/screens/mentor_screens/mentor_home.dart';
 import 'package:kwtd/screens/setup_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';

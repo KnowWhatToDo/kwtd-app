@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kwtd/screens/blogs.dart';
 import 'package:kwtd/screens/mentee_screens/mentee_home.dart';
 import 'package:kwtd/screens/mentee_screens/mentee_profile.dart';
+import 'package:kwtd/screens/mentor_screens/mentor_home.dart';
+import 'package:kwtd/screens/mentor_screens/mentor_profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,10 +15,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 1;
 
-  final List<Widget> screens = const [
+  final bool isMentor = true;
+
+  final List<Widget> menteeScreens = const [
     BlogScreen(),
     MenteeHome(),
     MenteeProfile(),
+  ];
+
+  final List<Widget> mentorScreens = const [
+    BlogScreen(),
+    MentorHome(),
+    MentorProfile(),
   ];
 
   @override
@@ -26,7 +36,9 @@ class _HomePageState extends State<HomePage> {
         title: const Text("Know What To Do"),
         centerTitle: true,
       ),
-      body: screens[_currentIndex],
+      body: isMentor
+          ? mentorScreens[_currentIndex]
+          : menteeScreens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: (tap) {
           setState(() {
