@@ -37,10 +37,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   # firebase_core: ^2.6.1
   country_picker: ^2.0.19
-  pinput:
-   git:
-    url: https://github.com/Tkko/Flutter_Pinput
-    ref: dev 
+  # pinput:
+  #  git:
+  #   url: https://github.com/Tkko/Flutter_Pinput
+  #   ref: dev 
+
   flutter_riverpod: ^2.3.0
   http: ^0.13.5
   firebase_core: ^2.10.0
@@ -49,6 +50,7 @@ dependencies:
   flutter_initicon: ^3.0.0+1
   carousel_slider: ^4.2.1
   flutter_dotenv: ^5.0.2
+  pinput: ^2.2.31
 
 dev_dependencies:
   flutter_test:

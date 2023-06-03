@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 1;
 
-  final bool isMentor = true;
+  final bool isMentor = false;
 
   final List<Widget> menteeScreens = const [
     BlogScreen(),

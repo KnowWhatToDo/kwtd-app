@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
-import 'package:kwtd/controllers/mentee_controller.dart';
-import 'package:kwtd/controllers/mentor_controller.dart';
-import 'package:kwtd/models/mentee.dart';
-import 'package:kwtd/models/mentor.dart';
+import 'package:kwtd/screens/mentee_screens/mentee_edit_profile.dart';
 
-class MeetingsView extends ConsumerStatefulWidget {
-  const MeetingsView({super.key});
+class MenteeMeetingsView extends ConsumerStatefulWidget {
+  const MenteeMeetingsView({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _MeetingsViewState();
 }
 
-class _MeetingsViewState extends ConsumerState<MeetingsView> {
+class _MeetingsViewState extends ConsumerState<MenteeMeetingsView> {
   @override
   void initState() {
     getMentee();
@@ -64,8 +60,13 @@ class NotRegistered extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('Goes to registeration page....')));
+                // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                //     content: Text('Goes to registeration page....')));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const MenteeProfielEdit(),
+                  ),
+                );
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepOrange.shade700),

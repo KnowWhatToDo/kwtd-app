@@ -26,6 +26,7 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
   ];
 
   late String _name;
+  late String _email;
   late String _year;
   late String _branch;
   late String _college;
@@ -34,6 +35,7 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
   @override
   void initState() {
     _name = '';
+    _email = '';
     _year = _years[0];
     _branch = _branches[0];
     _college = '';
@@ -47,6 +49,7 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
 
       if (kDebugMode) {
         print('Name: $_name');
+        print('Email: $_email');
         print('Year: $_year');
         print('Branch: $_branch');
         print('College: $_college');
@@ -57,9 +60,10 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        title: const Text('User Profile'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -67,8 +71,28 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                SizedBox(
+                  width: 80,
+                  height: 80,
+                  child: Initicon(
+                    text: name!,
+                    elevation: 4,
+                    backgroundColor: Colors.deepOrangeAccent,
+                  ),
+                ),
+                SizedBox(
+                  height: screenHeight * 0.01,
+                ),
+                Text(
+                  name!,
+                  style: TextStyle(
+                    fontSize: 28,
+                    color: Colors.blueGrey.shade800,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Name'),
                   validator: (value) {
@@ -79,6 +103,24 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
                   },
                   onSaved: (value) {
                     _name = value!;
+                  },
+                ),
+                const SizedBox(height: 16.0),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Email'),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                        .hasMatch(value)) {
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _email = value!;
                   },
                 ),
                 const SizedBox(height: 16.0),
