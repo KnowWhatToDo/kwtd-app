@@ -58,7 +58,7 @@ class _DefaultPageState extends ConsumerState<DefaultPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SignIn(loginType: 'mentee'),
+                      builder: (context) => const SignIn(loginType: 'mentee'),
                     ),
                   );
                 },
@@ -80,7 +80,7 @@ class _DefaultPageState extends ConsumerState<DefaultPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SignIn(loginType: 'mentor'),
+                      builder: (context) => const SignIn(loginType: 'mentor'),
                     ),
                   );
                 },

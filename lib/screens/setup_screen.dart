@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:kwtd/controllers/mentee_controller.dart';
 import 'package:kwtd/controllers/user_details.dart';
+import 'package:kwtd/models/mentee.dart';
 import 'package:kwtd/screens/home.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:localstorage/localstorage.dart';
 
 class AccountSetup extends ConsumerStatefulWidget {
   const AccountSetup({super.key});
@@ -72,12 +75,32 @@ class _AccountSetupState extends ConsumerState<AccountSetup> {
               height: screenHeight * 0.05,
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   FirebaseAuth.instance.currentUser!
                       .updateDisplayName(_controller.text);
                   ref.read(usernameProvider.notifier).state = _controller.text;
 
+                  String type =
+                      await LocalStorage('user_data.json').getItem('key');
+                  if (type == 'mentee') {
+                    Mentee mentee = Mentee(
+                      name: _controller.text,
+                      phone: FirebaseAuth.instance.currentUser!.phoneNumber
+                          .toString(),
+                      email: '',
+                      collegeName: '',
+                      collegeYear: '',
+                      collegeBranch: '',
+                      linkedInProfile: '',
+                      questions: [],
+                      answers: [],
+                      mentors: [],
+                    );
+                    await createMentee(mentee);
+                  } else {}
+
+                  // ignore: use_build_context_synchronously
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(

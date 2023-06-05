@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kwtd/controllers/user_details.dart';
 import 'package:kwtd/services/authentication.dart';
 import 'package:kwtd/styles/styles.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpScreen extends ConsumerStatefulWidget {
@@ -21,6 +22,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
   final otpController = TextEditingController();
   String verificationId = '';
   int? resendtoken;
+  final storage = LocalStorage('user_data.json');
 
   void sendOTP({required String phoneNumber}) async {
     await FirebaseAuth.instance.verifyPhoneNumber(
@@ -140,6 +142,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                     if (kDebugMode) {
                       print('unable to reach the homepage....');
                     }
+                    storage.setItem('type', widget.loginType);
                     // ignore: use_build_context_synchronously
                     Navigator.popUntil(context, (route) => route.isFirst);
                   } else {

@@ -1,49 +1,57 @@
 import 'dart:convert';
 
-Mentee menteeFromJson(String str) => Mentee.fromJson(json.decode(str));
+Mentee mentorFromJson(String str) => Mentee.fromJson(json.decode(str));
 
-String menteeToJson(Mentee data) => json.encode(data.toJson());
+String mentorToJson(Mentee data) => json.encode(data.toJson());
 
 class Mentee {
   String name;
-  String currentYear;
-  String collegeName;
-  String branch;
-  String linkedInProfile;
+  String phone;
   String email;
-  List<dynamic> questions;
-  List<dynamic> answers;
+  String collegeName;
+  String collegeYear;
+  String collegeBranch;
+  String linkedInProfile;
+  List<String> questions;
+  List<String> answers;
+  List<String> mentors;
 
   Mentee({
     required this.name,
-    required this.currentYear,
-    required this.collegeName,
-    required this.branch,
-    required this.linkedInProfile,
+    required this.phone,
     required this.email,
+    required this.collegeName,
+    required this.collegeYear,
+    required this.collegeBranch,
+    required this.linkedInProfile,
     required this.questions,
     required this.answers,
+    required this.mentors,
   });
 
   factory Mentee.fromJson(Map<String, dynamic> json) => Mentee(
         name: json["name"],
-        currentYear: json["currentYear"],
-        collegeName: json["collegeName"],
-        branch: json["branch"],
-        linkedInProfile: json["linkedInProfile"],
+        phone: json["phone"],
         email: json["email"],
-        questions: List<dynamic>.from(json["questions"].map((x) => x)),
-        answers: List<dynamic>.from(json["answers"].map((x) => x)),
+        collegeName: json["collegeName"],
+        collegeYear: json["collegeYear"],
+        collegeBranch: json["collegeBranch"],
+        linkedInProfile: json["LinkedInProfile"],
+        questions: List<String>.from(json["questions"].map((x) => x)),
+        answers: List<String>.from(json["answers"].map((x) => x)),
+        mentors: List<String>.from(json["mentors"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "name": name,
-        "currentYear": currentYear,
-        "collegeName": collegeName,
-        "branch": branch,
-        "LinkedInProfile": linkedInProfile,
+        "phone": phone,
         "email": email,
+        "collegeName": collegeName,
+        "collegeYear": collegeYear,
+        "collegeBranch": collegeBranch,
+        "LinkedInProfile": linkedInProfile,
         "questions": List<dynamic>.from(questions.map((x) => x)),
         "answers": List<dynamic>.from(answers.map((x) => x)),
+        "mentors": List<dynamic>.from(mentors.map((x) => x)),
       };
 }
