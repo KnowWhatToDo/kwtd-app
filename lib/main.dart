@@ -1,16 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kwtd/screens/default_page.dart';
 import 'package:kwtd/screens/home.dart';
-import 'package:kwtd/screens/mentor_screens/mentor_home.dart';
 import 'package:kwtd/screens/setup_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:kwtd/themes/light_theme.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -20,11 +20,15 @@ void main() async {
     appleProvider: AppleProvider.appAttest,
   );
 
+  await dotenv.load(fileName: 'assets/.env');
+
   runApp(
     const ProviderScope(
       child: App(),
     ),
   );
+
+  print(dotenv.get('TEST_VALUE'));
 }
 
 class App extends ConsumerStatefulWidget {
