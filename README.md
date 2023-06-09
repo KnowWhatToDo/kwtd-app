@@ -10,13 +10,9 @@ Main folders to look out for:
 - widgets (contains of frequently used UI components)
 - models (contains the basic schema of the api calls to be made)
 
-## TODO:
-- Make Wallet UI
-- Make Home page meetings/request meetings setting
-- Make mentor profile edit UI
-- ~~Make Views folder to insert views~~
-- ~~Make Models folder to add models for api calls~~
-- ~~Implement home screen~~
-- ~~Decide on Mentee form (as per the algorithm)~~
-- ~~design mentor UI~~
-- ~~Make home page carousel~~
+## TODO (This week):
+- Mentor on boarding process
+
+## Systems working:
+- Authentication
+- Mentee onboarding
