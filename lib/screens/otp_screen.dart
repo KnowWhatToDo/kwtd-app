@@ -22,7 +22,6 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
   final otpController = TextEditingController();
   String verificationId = '';
   int? resendtoken;
-  final storage = LocalStorage('user_data.json');
 
   void sendOTP({required String phoneNumber}) async {
     await FirebaseAuth.instance.verifyPhoneNumber(
@@ -142,7 +141,14 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                     if (kDebugMode) {
                       print('unable to reach the homepage....');
                     }
-                    storage.setItem('type', widget.loginType);
+                    await LocalStorage('user_data.json')
+                        .setItem('type', widget.loginType);
+
+                    String x =
+                        await LocalStorage('user_data.json').getItem('type');
+                    if (kDebugMode) {
+                      print('from OTP screen, type: ${x}');
+                    }
                     // ignore: use_build_context_synchronously
                     Navigator.popUntil(context, (route) => route.isFirst);
                   } else {

@@ -44,7 +44,7 @@ dependencies:
 
   flutter_riverpod: ^2.3.0
   http: ^0.13.5
-  firebase_core: ^2.10.0
+  firebase_core: ^2.8.0
   firebase_app_check: ^0.1.2+3
   firebase_auth: ^4.4.2
   flutter_initicon: ^3.0.0+1

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kwtd/controllers/mentee_controller.dart';
 import 'package:kwtd/controllers/user_details.dart';
@@ -17,6 +18,17 @@ class AccountSetup extends ConsumerStatefulWidget {
 class _AccountSetupState extends ConsumerState<AccountSetup> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _controller = TextEditingController();
+
+  void getType() async {
+    String type = await LocalStorage('user_data.json').getItem('type');
+    print(type);
+  }
+
+  @override
+  void initState() {
+    getType();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,32 +89,41 @@ class _AccountSetupState extends ConsumerState<AccountSetup> {
             ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
+                  final navigator = Navigator.of(context);
+
                   FirebaseAuth.instance.currentUser!
                       .updateDisplayName(_controller.text);
                   ref.read(usernameProvider.notifier).state = _controller.text;
 
                   String type =
-                      await LocalStorage('user_data.json').getItem('key');
+                      await LocalStorage('user_data.json').getItem('type');
+                  String phoneNumber =
+                      FirebaseAuth.instance.currentUser!.phoneNumber.toString();
                   if (type == 'mentee') {
                     Mentee mentee = Mentee(
                       name: _controller.text,
-                      phone: FirebaseAuth.instance.currentUser!.phoneNumber
-                          .toString(),
-                      email: '',
-                      collegeName: '',
-                      collegeYear: '',
-                      collegeBranch: '',
-                      linkedInProfile: '',
-                      questions: [],
+                      phone: phoneNumber.substring(phoneNumber.length - 10),
+                      email: 'please enter your email id',
+                      collegeName: 'please enter your college name',
+                      collegeYear: '1st Year',
+                      collegeBranch: 'Computer Science',
+                      linkedInProfile: 'please enter your linked profile',
+                      questions: ['Domain Selection', 'Coding logic'],
                       answers: [],
                       mentors: [],
+                      meetings: [],
                     );
-                    await createMentee(mentee);
-                  } else {}
+                    try {
+                      await createMentee(mentee);
+                    } catch (error) {
+                      if (kDebugMode) {
+                        print(error);
+                      }
+                    }
+                    ref.watch(menteeUserProvider.notifier).state = mentee;
+                  } else if (type == "mentor") {}
 
-                  // ignore: use_build_context_synchronously
-                  Navigator.pushReplacement(
-                    context,
+                  navigator.pushReplacement(
                     MaterialPageRoute(
                       builder: (context) => const HomePage(),
                     ),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
+import 'package:kwtd/models/mentee.dart';
 import 'package:kwtd/screens/mentee_screens/mentee_edit_profile.dart';
 
 class MenteeMeetingsView extends ConsumerStatefulWidget {
@@ -12,7 +15,7 @@ class MenteeMeetingsView extends ConsumerStatefulWidget {
 class _MeetingsViewState extends ConsumerState<MenteeMeetingsView> {
   @override
   void initState() {
-    getMentee();
+    getMenteeDetails();
     super.initState();
   }
 
@@ -25,13 +28,14 @@ class _MeetingsViewState extends ConsumerState<MenteeMeetingsView> {
         : Container();
   }
 
-  void getMentee() async {
-    // Mentee mentee = await getMenteeDetails();
-    // if (kDebugMode) {
-    //   print('Mentee name: $mentee.name');
-    // }
-    // Mentor mentor = await getMentorDetails();
-    // print(mentor.experiences[0].endDate.toString().split(' ')[0]);
+  void getMenteeDetails() async {
+    // await dotenv.load(fileName: 'assets/.env');
+    // var res = await http.get(
+    //   Uri.parse('${dotenv.get('TEST_ADDRESS')}/getMentee?phone=1122334455'),
+    // );
+    // print(res.body);
+    // Mentee mentee = menteeFromJson(res.body);
+    // // print(mentee.name);
   }
 }
 
@@ -59,9 +63,7 @@ class NotRegistered extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.05,
             ),
             ElevatedButton(
-              onPressed: () {
-                // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                //     content: Text('Goes to registeration page....')));
+              onPressed: () async {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const MenteeProfielEdit(),
