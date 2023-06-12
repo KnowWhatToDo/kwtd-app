@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:kwtd/models/mentee.dart';
+import 'package:kwtd/models/mentor.dart';
 
 final phoneNumberStateProvider = StateProvider<String>((ref) {
   return '+911122334455';
@@ -30,5 +31,18 @@ final menteeUserProvider = StateProvider(
     answers: [],
     mentors: [],
     meetings: [],
+  ),
+);
+
+final mentorUserProvider = StateProvider(
+  (ref) => Mentor(
+    phone: '',
+    name: '',
+    collegeName: '',
+    skills: [],
+    email: '',
+    linkedinUrl: '',
+    isVerified: false,
+    experience: 0,
   ),
 );

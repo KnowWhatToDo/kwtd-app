@@ -1,44 +1,49 @@
 import 'dart:convert';
 
-import 'package:kwtd/models/experience.dart';
-
 Mentor mentorFromJson(String str) => Mentor.fromJson(json.decode(str));
 
 String mentorToJson(Mentor data) => json.encode(data.toJson());
 
 class Mentor {
-  String name;
-  List<Experience> experiences;
-  String collegeName;
-  List<String> skills;
-  int wallet;
-  bool isVerified;
+    String phone;
+    String name;
+    String collegeName;
+    List<String> skills;
+    String email;
+    String linkedinUrl;
+    double experience;
+    bool isVerified;
 
-  Mentor({
-    required this.name,
-    required this.experiences,
-    required this.collegeName,
-    required this.skills,
-    required this.wallet,
-    required this.isVerified,
-  });
+    Mentor({
+        required this.phone,
+        required this.name,
+        required this.collegeName,
+        required this.skills,
+        required this.email,
+        required this.linkedinUrl,
+        required this.experience,
+        required this.isVerified,
+    });
 
-  factory Mentor.fromJson(Map<String, dynamic> json) => Mentor(
+    factory Mentor.fromJson(Map<String, dynamic> json) => Mentor(
+        phone: json["phone"],
         name: json["name"],
-        experiences: List<Experience>.from(
-            json["experiences"].map((x) => Experience.fromJson(x))),
         collegeName: json["collegeName"],
         skills: List<String>.from(json["skills"].map((x) => x)),
-        wallet: json["wallet"],
-        isVerified: json["verified"],
-      );
+        email: json["email"],
+        linkedinUrl: json["linkedinUrl"],
+        experience: json["experience"].toDouble(),
+        isVerified: json["isVerified"],
+    );
 
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
+        "phone": phone,
         "name": name,
-        "experiences": List<dynamic>.from(experiences.map((x) => x.toJson())),
         "collegeName": collegeName,
         "skills": List<dynamic>.from(skills.map((x) => x)),
-        "wallet": wallet,
+        "email": email,
+        "linkedinUrl": linkedinUrl,
+        "experience": experience,
         "isVerified": isVerified,
-      };
+    };
 }

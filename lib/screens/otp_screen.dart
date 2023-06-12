@@ -47,7 +47,6 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -127,6 +126,8 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
               ),
               ElevatedButton(
                 onPressed: () async {
+                  var navigator = Navigator.of(context);
+
                   PhoneAuthCredential credential = PhoneAuthProvider.credential(
                     verificationId: verificationId,
                     smsCode: otpController.text,
@@ -138,19 +139,16 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                   );
 
                   if (authStatus) {
-                    if (kDebugMode) {
-                      print('unable to reach the homepage....');
-                    }
                     await LocalStorage('user_data.json')
                         .setItem('type', widget.loginType);
 
                     String x =
                         await LocalStorage('user_data.json').getItem('type');
                     if (kDebugMode) {
-                      print('from OTP screen, type: ${x}');
+                      print('from OTP screen, type: $x');
                     }
-                    // ignore: use_build_context_synchronously
-                    Navigator.popUntil(context, (route) => route.isFirst);
+
+                    navigator.popUntil((route) => route.isFirst);
                   } else {
                     return;
                   }

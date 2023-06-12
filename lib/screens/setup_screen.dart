@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kwtd/controllers/mentee_controller.dart';
+import 'package:kwtd/controllers/mentor_controller.dart';
 import 'package:kwtd/controllers/user_details.dart';
 import 'package:kwtd/models/mentee.dart';
+import 'package:kwtd/models/mentor.dart';
 import 'package:kwtd/screens/home.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:localstorage/localstorage.dart';
@@ -21,7 +23,9 @@ class _AccountSetupState extends ConsumerState<AccountSetup> {
 
   void getType() async {
     String type = await LocalStorage('user_data.json').getItem('type');
-    print(type);
+    if (kDebugMode) {
+      print(type);
+    }
   }
 
   @override
@@ -121,7 +125,27 @@ class _AccountSetupState extends ConsumerState<AccountSetup> {
                       }
                     }
                     ref.watch(menteeUserProvider.notifier).state = mentee;
-                  } else if (type == "mentor") {}
+                  } else if (type == "mentor") {
+                    Mentor mentor = Mentor(
+                      phone: phoneNumber.substring(phoneNumber.length - 10),
+                      name: _controller.text,
+                      collegeName: ' ',
+                      skills: [],
+                      email: ' ',
+                      linkedinUrl: ' ',
+                      isVerified: false,
+                      experience: 0,
+                    );
+                    try {
+                      await createMentor(mentor);
+                    } catch (error) {
+                      if (kDebugMode) {
+                        print(error);
+                        print('lol');
+                      }
+                    }
+                    ref.watch(mentorUserProvider.notifier).state = mentor;
+                  }
 
                   navigator.pushReplacement(
                     MaterialPageRoute(

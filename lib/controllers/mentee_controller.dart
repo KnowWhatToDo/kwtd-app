@@ -7,7 +7,6 @@ Future<Mentee> getMentee(String number) async {
   var res = await http.get(
     Uri.parse('${dotenv.get('TEST_ADDRESS')}/getMentee?phone=$number'),
   );
-  print(res.body);
   return menteeFromJson(res.body);
 }
 
