@@ -35,7 +35,6 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
     'Other'
   ];
 
-  late Mentee mentee;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
@@ -43,18 +42,30 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
   final TextEditingController _collegeController = TextEditingController();
   final TextEditingController _linkedinController = TextEditingController();
 
-  Future<void> getData() async {
+  late Future<Mentee> mentee;
+  Future<Mentee> getData() async {
     String phoneNumber = FirebaseAuth.instance.currentUser!.phoneNumber!;
-    mentee = await getMentee(phoneNumber.substring(phoneNumber.length - 10));
-    setState(() {
-      _nameController.text = mentee.name;
-      _emailController.text = mentee.email;
-      _yearController.text = mentee.collegeYear;
-      _branchController.text = mentee.collegeBranch;
-      _collegeController.text = mentee.collegeName;
-      _linkedinController.text = mentee.linkedInProfile;
-      print('mentee initialized');
-    });
+    print(phoneNumber);
+    late Mentee mentee;
+    try {
+      mentee = await getMentee(phoneNumber.substring(phoneNumber.length - 10));
+      setState(() {
+        _nameController.text = mentee.name;
+        _emailController.text = mentee.email;
+        _yearController.text = mentee.collegeYear;
+        _branchController.text = mentee.collegeBranch;
+        _collegeController.text = mentee.collegeName;
+        _linkedinController.text = mentee.linkedInProfile;
+        if (kDebugMode) {
+          print('mentee initialized');
+        }
+      });
+    } catch (error) {
+      if (kDebugMode) {
+        print('API error');
+      }
+    }
+    return mentee;
   }
 
   @override
@@ -63,7 +74,7 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
     _emailController.text = '';
     _collegeController.text = '';
     _linkedinController.text = '';
-    getData();
+    mentee = getData();
     if (!_branches.contains(_branchController.text)) {
       setState(() {
         _branchController.text = _branches[0];
@@ -95,173 +106,188 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
       appBar: AppBar(
         title: const Text('User Profile'),
       ),
-      body: SingleChildScrollView(
-          child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 80,
-                height: 80,
-                child: Initicon(
-                  text: name!,
-                  elevation: 4,
-                  backgroundColor: Colors.deepOrangeAccent,
+      body: FutureBuilder(
+        future: mentee,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return SingleChildScrollView(
+                child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 80,
+                      height: 80,
+                      child: Initicon(
+                        text: name!,
+                        elevation: 4,
+                        backgroundColor: Colors.deepOrangeAccent,
+                      ),
+                    ),
+                    SizedBox(
+                      height: screenHeight * 0.01,
+                    ),
+                    Text(
+                      name!,
+                      style: TextStyle(
+                        fontSize: 28,
+                        color: Colors.blueGrey.shade800,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(labelText: 'Name'),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your name';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _nameController.text = value!;
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(labelText: 'Email'),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                            .hasMatch(value)) {
+                          return 'Please enter a valid email address';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _emailController.text = value!;
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
+                    DropdownButtonFormField<String>(
+                      value: _yearController.text.isEmpty
+                          ? _years[0]
+                          : _yearController.text,
+                      items: _years.map((String year) {
+                        return DropdownMenuItem<String>(
+                          value: year,
+                          child: Text(year),
+                        );
+                      }).toList(),
+                      decoration:
+                          const InputDecoration(labelText: 'Year of Education'),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select your year of education';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _yearController.text = value!;
+                        });
+                      },
+                      onSaved: (value) {
+                        _yearController.text = value!;
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
+                    DropdownButtonFormField<String>(
+                      value: _branchController.text.isEmpty
+                          ? _branches[0]
+                          : _branchController.text,
+                      items: _branches.map((String branch) {
+                        return DropdownMenuItem<String>(
+                          value: branch,
+                          child: Text(branch),
+                        );
+                      }).toList(),
+                      decoration: const InputDecoration(
+                          labelText: 'Branch of Engineering'),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select your branch of engineering';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _branchController.text = value!;
+                        });
+                      },
+                      onSaved: (value) {
+                        _branchController.text = value!;
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      controller: _collegeController,
+                      decoration:
+                          const InputDecoration(labelText: 'Name of College'),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter the name of your college';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _collegeController.text = value!;
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      controller: _linkedinController,
+                      decoration: const InputDecoration(
+                          labelText: 'LinkedIn Profile URL'),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your LinkedIn profile URL';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        _linkedinController.text = value;
+                        print(_linkedinController.text);
+                      },
+                      onSaved: (value) {
+                        _linkedinController.text = value!;
+                        print(_linkedinController.text);
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
+                    ElevatedButton(
+                      onPressed: () {
+                        _submitForm(mentee: snapshot.data);
+                      },
+                      child: const Text('Next'),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(
-                height: screenHeight * 0.01,
-              ),
-              Text(
-                name!,
-                style: TextStyle(
-                  fontSize: 28,
-                  color: Colors.blueGrey.shade800,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _nameController.text = value!;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                      .hasMatch(value)) {
-                    return 'Please enter a valid email address';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _emailController.text = value!;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              DropdownButtonFormField<String>(
-                value: _yearController.text.isEmpty
-                    ? _years[0]
-                    : _yearController.text,
-                items: _years.map((String year) {
-                  return DropdownMenuItem<String>(
-                    value: year,
-                    child: Text(year),
-                  );
-                }).toList(),
-                decoration:
-                    const InputDecoration(labelText: 'Year of Education'),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select your year of education';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    _yearController.text = value!;
-                  });
-                },
-                onSaved: (value) {
-                  _yearController.text = value!;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              DropdownButtonFormField<String>(
-                value: _branchController.text.isEmpty
-                    ? _branches[0]
-                    : _branchController.text,
-                items: _branches.map((String branch) {
-                  return DropdownMenuItem<String>(
-                    value: branch,
-                    child: Text(branch),
-                  );
-                }).toList(),
-                decoration:
-                    const InputDecoration(labelText: 'Branch of Engineering'),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select your branch of engineering';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    _branchController.text = value!;
-                  });
-                },
-                onSaved: (value) {
-                  _branchController.text = value!;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _collegeController,
-                decoration: const InputDecoration(labelText: 'Name of College'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter the name of your college';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _collegeController.text = value!;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _linkedinController,
-                decoration:
-                    const InputDecoration(labelText: 'LinkedIn Profile URL'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your LinkedIn profile URL';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  _linkedinController.text = value;
-                  print(_linkedinController.text);
-                },
-                onSaved: (value) {
-                  _linkedinController.text = value!;
-                  print(_linkedinController.text);
-                },
-              ),
-              const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: const Text('Next'),
-              ),
-            ],
-          ),
-        ),
-      )),
+            ));
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
     );
   }
 
-  void _submitForm() async {
+  void _submitForm({required Mentee? mentee}) {
+    var navigator = Navigator.of(context);
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      mentee.name = _nameController.text;
+      mentee!.name = _nameController.text;
       mentee.email = _emailController.text;
       mentee.collegeYear = _yearController.text;
       mentee.collegeBranch = _branchController.text;
@@ -279,7 +305,7 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
         print('LinkedIn: ${_linkedinController.text}');
       }
 
-      Navigator.of(context).push(
+      navigator.push(
         MaterialPageRoute(
           builder: (context) => const DomainSelectionScreen(),
         ),

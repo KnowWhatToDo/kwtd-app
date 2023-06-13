@@ -20,17 +20,18 @@ class AccountSetup extends ConsumerStatefulWidget {
 class _AccountSetupState extends ConsumerState<AccountSetup> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _controller = TextEditingController();
-
-  void getType() async {
-    String type = await LocalStorage('user_data.json').getItem('type');
-    if (kDebugMode) {
-      print(type);
-    }
-  }
+  // late Future<String> userType;
+  // Future<String> getType() async {
+  //   String type = await LocalStorage('user_data.json').getItem('type');
+  //   if (kDebugMode) {
+  //     print(type);
+  //   }
+  //   return type;
+  // }
 
   @override
   void initState() {
-    getType();
+    // userType = getType();
     super.initState();
   }
 
@@ -104,14 +105,17 @@ class _AccountSetupState extends ConsumerState<AccountSetup> {
                   String phoneNumber =
                       FirebaseAuth.instance.currentUser!.phoneNumber.toString();
                   if (type == 'mentee') {
+                    if (kDebugMode) {
+                      print('Type Detected: $type');
+                    }
                     Mentee mentee = Mentee(
                       name: _controller.text,
                       phone: phoneNumber.substring(phoneNumber.length - 10),
-                      email: 'please enter your email id',
-                      collegeName: 'please enter your college name',
+                      email: ' ',
+                      collegeName: ' ',
                       collegeYear: '1st Year',
                       collegeBranch: 'Computer Science',
-                      linkedInProfile: 'please enter your linked profile',
+                      linkedInProfile: ' ',
                       questions: ['Domain Selection', 'Coding logic'],
                       answers: [],
                       mentors: [],
@@ -126,6 +130,9 @@ class _AccountSetupState extends ConsumerState<AccountSetup> {
                     }
                     ref.watch(menteeUserProvider.notifier).state = mentee;
                   } else if (type == "mentor") {
+                    if (kDebugMode) {
+                      print('Type Detected: $type');
+                    }
                     Mentor mentor = Mentor(
                       phone: phoneNumber.substring(phoneNumber.length - 10),
                       name: _controller.text,
@@ -141,10 +148,13 @@ class _AccountSetupState extends ConsumerState<AccountSetup> {
                     } catch (error) {
                       if (kDebugMode) {
                         print(error);
-                        print('lol');
                       }
                     }
                     ref.watch(mentorUserProvider.notifier).state = mentor;
+                  } else {
+                    if (kDebugMode) {
+                      print('local storage is null');
+                    }
                   }
 
                   navigator.pushReplacement(
@@ -162,3 +172,14 @@ class _AccountSetupState extends ConsumerState<AccountSetup> {
     );
   }
 }
+        // } else {
+          // return const /Scaffold(
+            // body: Center(
+              // child: CircularProgressIndicator(),
+            // ),
+          // );
+        // }
+      // },
+    // );
+  // }
+// }

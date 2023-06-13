@@ -81,7 +81,8 @@ class _CodingSkillScreenState extends ConsumerState<CodingSkillScreen> {
     );
   }
 
-  void _validateAndSubmit() {
+  void _validateAndSubmit() async {
+    var navigator = Navigator.of(context);
     if (_selectedRating == 'None') {
       showPopUp(
         context: context,
@@ -98,8 +99,8 @@ class _CodingSkillScreenState extends ConsumerState<CodingSkillScreen> {
       ref.watch(menteeUserProvider.notifier).state.answers.add(_selectedRating);
     }
     try {
-      updateMentee(ref.read(menteeUserProvider));
-      Navigator.of(context).popUntil((route) => route.isFirst);
+      await updateMentee(ref.read(menteeUserProvider));
+      navigator.popUntil((route) => route.isFirst);
     } catch (error) {
       showPopUp(
         context: context,

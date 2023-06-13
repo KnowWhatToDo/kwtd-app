@@ -17,10 +17,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 1;
-  bool isMentor = false;
-  late final Future<String> userType;
+  bool _isMentor = false;
+  late final Future<bool> _isMentorFuture;
 
-  Future<String> getType() async {
+  Future<bool> getType() async {
     await dotenv.load(fileName: 'assets/.env');
     String phone = FirebaseAuth.instance.currentUser!.phoneNumber!;
     phone = phone.substring(phone.length - 10);
@@ -29,18 +29,14 @@ class _HomePageState extends State<HomePage> {
     print('Response: ${res.body}');
     if (res.body == 'mentee') {
       setState(() {
-        isMentor = false;
+        _isMentor = false;
       });
     } else if (res.body == 'mentor') {
       setState(() {
-        isMentor = true;
-      });
-    } else {
-      setState(() {
-        isMentor = false;
+        _isMentor = true;
       });
     }
-    return res.body;
+    return _isMentor;
   }
 
   final List<Widget> menteeScreens = const [
@@ -57,7 +53,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    userType = getType();
+    _isMentorFuture = getType();
     super.initState();
   }
 
@@ -69,18 +65,18 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
       ),
       body: FutureBuilder(
-        future: userType,
+        future: _isMentorFuture,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.none) {
+          if (snapshot.hasData) {
+            return _isMentor
+                ? mentorScreens[_currentIndex]
+                : menteeScreens[_currentIndex];
+          } else {
             return const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
               ),
             );
-          } else {
-            return isMentor
-                ? mentorScreens[_currentIndex]
-                : menteeScreens[_currentIndex];
           }
         },
       ),

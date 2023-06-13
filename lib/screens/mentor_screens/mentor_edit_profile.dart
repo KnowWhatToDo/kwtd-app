@@ -79,13 +79,10 @@ class _MentorProfileEditState extends ConsumerState<MentorProfileEdit> {
   void _submitForm(Mentor? mentor) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-
-      FirebaseAuth.instance.currentUser!
-          .updateDisplayName(_nameController.text);
       mentor!.name = _nameController.text;
       mentor.collegeName = _collegeController.text;
       mentor.email = _emailController.text;
-      mentor.experience = _experienceController.text as double;
+      mentor.experience = double.parse(_experienceController.text);
       mentor.linkedinUrl = _linkedinController.text;
       mentor.skills = _selectedTags;
 

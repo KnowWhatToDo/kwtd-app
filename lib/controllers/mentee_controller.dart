@@ -4,9 +4,14 @@ import 'package:http/http.dart' as http;
 
 Future<Mentee> getMentee(String number) async {
   await dotenv.load(fileName: 'assets/.env');
-  var res = await http.get(
-    Uri.parse('${dotenv.get('TEST_ADDRESS')}/getMentee?phone=$number'),
-  );
+  late http.Response res;
+  try {
+    res = await http.get(
+      Uri.parse('${dotenv.get('TEST_ADDRESS')}/getMentee?phone=$number'),
+    );
+  } catch (error) {
+    print(error);
+  }
   return menteeFromJson(res.body);
 }
 
