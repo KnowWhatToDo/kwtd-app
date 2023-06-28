@@ -7,6 +7,7 @@ import 'package:kwtd/screens/mentee_screens/mentee_profile.dart';
 import 'package:kwtd/screens/mentor_screens/mentor_home.dart';
 import 'package:kwtd/screens/mentor_screens/mentor_profile.dart';
 import 'package:http/http.dart' as http;
+import 'package:localstorage/localstorage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,16 +23,20 @@ class _HomePageState extends State<HomePage> {
 
   Future<bool> getType() async {
     await dotenv.load(fileName: 'assets/.env');
-    String phone = FirebaseAuth.instance.currentUser!.phoneNumber!;
-    phone = phone.substring(phone.length - 10);
-    var res = await http
-        .get(Uri.parse('${dotenv.get('TEST_ADDRESS')}/search?phone=$phone'));
-    print('Response: ${res.body}');
-    if (res.body == 'mentee') {
+    String? userType;
+    userType = LocalStorage('user_data.json').getItem('type');
+    if (userType == null) {
+      String phone = FirebaseAuth.instance.currentUser!.phoneNumber!;
+      phone = phone.substring(phone.length - 10);
+      var res = await http
+          .get(Uri.parse('${dotenv.get('TEST_ADDRESS')}/search?phone=$phone'));
+      userType = res.body;
+    }
+    if (userType == 'mentee') {
       setState(() {
         _isMentor = false;
       });
-    } else if (res.body == 'mentor') {
+    } else if (userType == 'mentor') {
       setState(() {
         _isMentor = true;
       });

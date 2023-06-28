@@ -20,18 +20,9 @@ class AccountSetup extends ConsumerStatefulWidget {
 class _AccountSetupState extends ConsumerState<AccountSetup> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _controller = TextEditingController();
-  // late Future<String> userType;
-  // Future<String> getType() async {
-  //   String type = await LocalStorage('user_data.json').getItem('type');
-  //   if (kDebugMode) {
-  //     print(type);
-  //   }
-  //   return type;
-  // }
 
   @override
   void initState() {
-    // userType = getType();
     super.initState();
   }
 
@@ -172,14 +163,3 @@ class _AccountSetupState extends ConsumerState<AccountSetup> {
     );
   }
 }
-        // } else {
-          // return const /Scaffold(
-            // body: Center(
-              // child: CircularProgressIndicator(),
-            // ),
-          // );
-        // }
-      // },
-    // );
-  // }
-// }

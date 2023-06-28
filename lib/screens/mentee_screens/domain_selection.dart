@@ -2,8 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kwtd/controllers/user_details.dart';
+import 'package:kwtd/models/mentee.dart';
 import 'package:kwtd/screens/mentee_screens/coding_skills_screen.dart';
 import 'package:kwtd/services/alert_dialog.dart';
+import 'package:localstorage/localstorage.dart';
 
 class DomainSelectionScreen extends ConsumerStatefulWidget {
   const DomainSelectionScreen({super.key});
@@ -30,9 +32,22 @@ class _DomainSelectionScreenState extends ConsumerState<DomainSelectionScreen> {
   @override
   void initState() {
     super.initState();
-    _firstDomain = ' ';
-    _secondDomain = ' ';
-    _thirdDomain = ' ';
+    List<String> answers = ref.read(menteeUserProvider).answers[0].split(",");
+    try {
+      _firstDomain = answers[0];
+    } catch (error) {
+      _firstDomain = ' ';
+    }
+    try {
+      _secondDomain = answers[1];
+    } catch (error) {
+      _secondDomain = ' ';
+    }
+    try {
+      _thirdDomain = answers[2];
+    } catch (error) {
+      _thirdDomain = ' ';
+    }
   }
 
   @override
@@ -41,66 +56,68 @@ class _DomainSelectionScreenState extends ConsumerState<DomainSelectionScreen> {
       appBar: AppBar(
         title: const Text('A few questions'),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'What are your domains of interest (in order of preference)?',
-                style: TextStyle(fontSize: 24.0),
-              ),
-              const SizedBox(height: 16.0),
-              DropdownButtonFormField<String>(
-                value: _firstDomain,
-                items: _buildDropdownItems(),
-                onChanged: (value) {
-                  setState(() {
-                    _firstDomain = value!;
-                  });
-                },
-                decoration: const InputDecoration(
-                  labelText: 'First Domain *',
+      body: Builder(builder: (context) {
+        return SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'What are your domains of interest (in order of preference)?',
+                  style: TextStyle(fontSize: 24.0),
                 ),
-              ),
-              const SizedBox(height: 16.0),
-              DropdownButtonFormField<String>(
-                value: _secondDomain,
-                items: _buildDropdownItems(),
-                onChanged: (value) {
-                  setState(() {
-                    _secondDomain = value!;
-                  });
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Second Domain',
+                const SizedBox(height: 16.0),
+                DropdownButtonFormField<String>(
+                  value: _firstDomain,
+                  items: _buildDropdownItems(),
+                  onChanged: (value) {
+                    setState(() {
+                      _firstDomain = value!;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'First Domain *',
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16.0),
-              DropdownButtonFormField<String>(
-                value: _thirdDomain,
-                items: _buildDropdownItems(),
-                onChanged: (value) {
-                  setState(() {
-                    _thirdDomain = value!;
-                  });
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Third Domain',
+                const SizedBox(height: 16.0),
+                DropdownButtonFormField<String>(
+                  value: _secondDomain,
+                  items: _buildDropdownItems(),
+                  onChanged: (value) {
+                    setState(() {
+                      _secondDomain = value!;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Second Domain',
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16.0),
-              Center(
-                child: ElevatedButton(
-                  onPressed: _validateAndSubmit,
-                  child: const Text('Next'),
+                const SizedBox(height: 16.0),
+                DropdownButtonFormField<String>(
+                  value: _thirdDomain,
+                  items: _buildDropdownItems(),
+                  onChanged: (value) {
+                    setState(() {
+                      _thirdDomain = value!;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Third Domain',
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 16.0),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: _validateAndSubmit,
+                    child: const Text('Next'),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 

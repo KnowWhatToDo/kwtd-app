@@ -58,4 +58,14 @@ class Mentee {
         "mentors": List<dynamic>.from(mentors.map((x) => x)),
         "meetings": List<dynamic>.from(meetings.map((x) => x)),
       };
+
+  bool isRegistered() {
+    if (email == ' ' ||
+        collegeName == ' ' ||
+        linkedInProfile == ' ' ||
+        answers.isEmpty) {
+      return false;
+    }
+    return true;
+  }
 }

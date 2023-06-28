@@ -7,6 +7,7 @@ import 'package:kwtd/controllers/mentee_controller.dart';
 import 'package:kwtd/controllers/user_details.dart';
 import 'package:kwtd/models/mentee.dart';
 import 'package:kwtd/screens/mentee_screens/domain_selection.dart';
+import 'package:localstorage/localstorage.dart';
 
 class MenteeProfielEdit extends ConsumerStatefulWidget {
   const MenteeProfielEdit({super.key});
@@ -27,6 +28,7 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
     '4th Year',
     'Working',
   ];
+
   final List<String> _branches = [
     'Computer Science',
     'Mechanical',
@@ -43,12 +45,20 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
   final TextEditingController _linkedinController = TextEditingController();
 
   late Future<Mentee> mentee;
+  final LocalStorage storage = LocalStorage("kwtd");
   Future<Mentee> getData() async {
     String phoneNumber = FirebaseAuth.instance.currentUser!.phoneNumber!;
-    print(phoneNumber);
+    if (kDebugMode) {
+      print(phoneNumber);
+    }
     late Mentee mentee;
     try {
-      mentee = await getMentee(phoneNumber.substring(phoneNumber.length - 10));
+      mentee = menteeFromJson(storage.getItem('menteeUserDetails'));
+      // ignore: unnecessary_null_comparison
+      if (mentee == null) {
+        await getMentee(phoneNumber.substring(phoneNumber.length - 10));
+      }
+
       setState(() {
         _nameController.text = mentee.name;
         _emailController.text = mentee.email;
@@ -254,11 +264,15 @@ class _MenteeProfielEditState extends ConsumerState<MenteeProfielEdit> {
                       },
                       onChanged: (value) {
                         _linkedinController.text = value;
-                        print(_linkedinController.text);
+                        if (kDebugMode) {
+                          print(_linkedinController.text);
+                        }
                       },
                       onSaved: (value) {
                         _linkedinController.text = value!;
-                        print(_linkedinController.text);
+                        if (kDebugMode) {
+                          print(_linkedinController.text);
+                        }
                       },
                     ),
                     const SizedBox(height: 16.0),

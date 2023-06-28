@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kwtd/controllers/mentee_controller.dart';
 import 'package:kwtd/controllers/user_details.dart';
+import 'package:kwtd/models/mentee.dart';
 import 'package:kwtd/services/alert_dialog.dart';
+import 'package:localstorage/localstorage.dart';
 
 class CodingSkillScreen extends ConsumerStatefulWidget {
   const CodingSkillScreen({super.key});
@@ -19,7 +21,11 @@ class _CodingSkillScreenState extends ConsumerState<CodingSkillScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedRating = 'None';
+    try {
+      _selectedRating = ref.read(menteeUserProvider).answers[1];
+    } catch (e) {
+      _selectedRating = 'None';
+    }
   }
 
   @override
@@ -99,7 +105,16 @@ class _CodingSkillScreenState extends ConsumerState<CodingSkillScreen> {
       ref.watch(menteeUserProvider.notifier).state.answers.add(_selectedRating);
     }
     try {
+      await LocalStorage('kwtd').setItem(
+        'menteeUserDetails',
+        menteeToJson(ref.read(menteeUserProvider)),
+      );
       await updateMentee(ref.read(menteeUserProvider));
+      Mentee test =
+          menteeFromJson(LocalStorage('kwtd').getItem('menteeUserDetails'));
+      if (kDebugMode) {
+        print(test.name);
+      }
       navigator.popUntil((route) => route.isFirst);
     } catch (error) {
       showPopUp(

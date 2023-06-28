@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:kwtd/models/mentee.dart';
 import 'package:kwtd/screens/mentee_screens/mentee_edit_profile.dart';
+import 'package:localstorage/localstorage.dart';
 
 class MenteeMeetingsView extends ConsumerStatefulWidget {
   const MenteeMeetingsView({super.key});
@@ -13,29 +15,50 @@ class MenteeMeetingsView extends ConsumerStatefulWidget {
 }
 
 class _MeetingsViewState extends ConsumerState<MenteeMeetingsView> {
+  late Future<Mentee> mentee;
+
   @override
   void initState() {
-    getMenteeDetails();
+    mentee = getMenteeDetails();
     super.initState();
   }
 
-  String meetingState = 'not-registered';
-
   @override
   Widget build(BuildContext context) {
-    return (meetingState == 'not-registered')
-        ? const NotRegistered()
-        : Container();
+    return FutureBuilder(
+      future: mentee,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return snapshot.data!.isRegistered()
+              ? Container()
+              : const NotRegistered();
+        }
+        return const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
+    );
   }
 
-  void getMenteeDetails() async {
-    // await dotenv.load(fileName: 'assets/.env');
-    // var res = await http.get(
-    //   Uri.parse('${dotenv.get('TEST_ADDRESS')}/getMentee?phone=1122334455'),
-    // );
-    // print(res.body);
-    // Mentee mentee = menteeFromJson(res.body);
-    // // print(mentee.name);
+  Future<Mentee> getMenteeDetails() async {
+    await dotenv.load(fileName: 'assets/.env');
+    final LocalStorage storage = LocalStorage('kwtd');
+    Mentee? mentee;
+    mentee = menteeFromJson(storage.getItem('menteeUserDetails'));
+
+    // ignore: unnecessary_null_comparison
+    if (mentee == null) {
+      String phone = FirebaseAuth.instance.currentUser!.phoneNumber!;
+      phone = phone.substring(phone.length - 10);
+      var res = await http.get(
+        Uri.parse('${dotenv.get('TEST_ADDRESS')}/getMentee?phone=$phone'),
+      );
+      mentee = menteeFromJson(res.body);
+    }
+    return mentee;
   }
 }
 
