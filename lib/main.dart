@@ -11,6 +11,15 @@ import 'firebase_options.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:kwtd/themes/light_theme.dart';
 
+/* 
+Note to the mantainer this:
+The app attempts to always access the locall stored data using LocalStorage
+packages as visible in pubspect.yaml.
+In the event that the data is not available, the app makes an API
+request to get the data, by design multiple features of the app are built this
+way to improve the performance and reducing the number of API calls.
+ */
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -21,6 +30,7 @@ Future<void> main() async {
     appleProvider: AppleProvider.appAttest,
   );
 
+  // loading .env file to access the ip address of the server
   await dotenv.load(fileName: 'assets/.env');
 
   runApp(
@@ -29,6 +39,7 @@ Future<void> main() async {
     ),
   );
   if (kDebugMode) {
+    // the set test value gets printed to confirm that env file available
     print(dotenv.get('TEST_VALUE'));
   }
 }

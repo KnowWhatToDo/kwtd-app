@@ -3,7 +3,7 @@ import 'package:kwtd/models/mentee.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 
-/// Gets the details of a mentee by the individiual's number
+/// Gets the details of a [Mentee] by the individiual's number
 /// [param] Takes [String] number as parameter
 /// [returns] a [Future] of [Mentee] object with details of the Mentee
 Future<Mentee> getMentee(String number) async {
